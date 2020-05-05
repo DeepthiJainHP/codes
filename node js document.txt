@@ -1,0 +1,167 @@
+NODE.JS
+
+1)res.write(),res.end(),res.send();
+	Here res.send() writes the response and also closes the connection in the first attempt only.
+	ex: for (; i <= max; i++) {
+			res.send('<h1>This is the response #: ' + i + '</h1>');
+		}
+		
+		o/p will be this is the response 1; only 1 time it appears then connection gets closed.
+		
+		
+	res.write();--->not like that in order to close the connection we need to use res.end();
+	ex:1.for (; i <= max; i++) {
+			res.send('<h1>This is the response #: ' + i + '</h1>');
+		}
+		res.end();
+		
+		
+		2.res.write("hai");
+		  res.write("hello");
+		  res.end();            //possible
+		
+		Always use res.end() with res.write();
+		
+		
+2)res.send() ----->in normal node js it is not used ,used when express is installed.
+
+	after reading the data of the file if you need to display the data in the console,convert it into string using "toString()"
+		if displaying in the web page no need of conveting.
+		
+		Or else you can use 'utf8' as a parameter in readFile()
+		
+	JSON.stringfy()--->converts json into objct ,,,,use when when u want to display the json file content in console. Not used while displaying in the server.
+	
+	
+3)readFileSync---->sync is mostke used when you need to read the config file ,and reamining execution need to start once reading of the file is comlpleted.
+	otherwise readFile() will be used normally
+	
+	
+	
+3)body-parser---->used to extract the entire req.body() of post method 
+
+
+EXPRESS
+1)fast,lightweight
+2)framework of NODE JS
+	
+	*MIDDLEWARE
+		1.Have access for request object,response object and next middleware function
+		2.app.use(function(req,res,next){            ------------------------->this s called for every req as no route is provided
+			console.log();
+			next();------------->used to hanndle the next middleware
+		}
+		3.Order is very important in which they have written
+		4.execute any code,make changes in req and res objects,call the next middleware,end the request and response cycle
+		
+		Types of MIDDLEWARE:
+		1.Application-level Middleware/custom middleware
+			ex:1.var app=express();
+				 app.use('/',(req,res,next)=>{    ------->can be used for any HTTP methods
+					console.log("hai");
+					next();
+				 });
+				 
+				 
+				2.var app=express();----------------------->middleware mounted on /usr/:id    Here as soon as the request is received ,the server sends 
+				  app.use('/usr/:id',(req,res,next)=>{										   the response,so it ends the request response cycle
+					console.log("hai");
+					next();	
+				  });
+				  
+			usually this middleware are written in the other file rather in app.js and then it is imported
+				  
+		2.Router-level Middleware
+			works in the same way as application-level middleware, except it is bound to an instance of express.Router().
+			ex;1.var app=express();
+				 var router=express.Router();
+				 
+				 router.use((req,res,next)=>{
+					console.log("a");
+					next();
+				 })
+				 
+		3.ErrorHandling-middleware
+			works similar to above the 2 middleware,but accepts 4 arguments ie.,(err,req,res,next),if err is not included other middleware willbe executed
+			ex:var app=express();
+				app.use((err,req,res,next)=>{
+				res.status(505).send("error found");
+				});
+				
+		4.Built-in middleware
+			express.static
+			express.json---->this middleware is to read the requset if there is any JSON obj in the request ,it will parse the body of the request into
+								JSON obj and then req.body property 
+			express.urlencoded
+			
+			
+		5.Third Party Middleware 	
+			we  need to install the third party middleware using the command 'npm install <middleware> --save'
+			1.body-parser------------------>used to parse the body of requests
+			ex:1)to parse the json data
+					app.use(bodyParser.json()).
+				2)to parse urlencoded data
+					app.use(bodyParser.urlencoded({extended:false}));
+			2.cookie-parser---------------->It parses Cookie header and populate req.cookies with an object keyed by cookie names
+			ex:app.use(cookieParser())
+	
+
+
+NODE PACKAGES
+1.express--------------------->node js framework
+2.moment----------------------->to get the current time in different format
+3.jasmine-node----------------->devdependcies,to test the app automatically
+4.nodemon---------------------->utility that will monitor for any changes in your source and automatically restart your noode server.
+
+
+
+COMMANDS
+1.npm install packagename --save-------------------------------->to install the package
+2.npm init------------------------------------------------------>to create the new package from the scratch(create the package.json file)
+3.npm install packagename --save -dev--------------------------->to install as devdependcies
+4.npm uninstall packagename------------------------------------->to uninstall the package
+5.npm install packagename -g------------------------------------>to install the package globally
+6.npm update packagename---------------------------------------->to update the particular package
+7.npm update --------------------------------------------------->to update all packges
+8.npm -v ,,,,node -v-------------------------------------------->version
+9.npm install node@<version>------------------------------------>node specific version
+10.npm updated-------------------------------------------------->specifies the current,wanted,latest of packages
+
+
+FILES
+1).gitignore-------------->files,commands which are to be excluded are mentioned here,ex: node_modules
+
+
+
+LINE OF CODEs
+1)var port =process.env.PORT || 3000;----->by this server can use any of the environment port to lunch the server ,if no other port are free it can use 3000.
+											So dynamic port assignment.
+		To set the port number to other use the command,'set PORT=5000',then run 'node app.js'
+
+		
+		
+STATUS CODE
+1xx--->informational  2xx--->success    3xx--->Redirection   4xx---->client error    5xx--->server error
+1)200--->OK
+2)400--->bad request
+2)404--->Not found
+3)401--->unauthorized
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
